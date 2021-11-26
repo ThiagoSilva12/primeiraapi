@@ -4,6 +4,8 @@
 
 const express = require("express");
 
+const cors = require('cors');
+
 
 // Vamos importar o modulo mongoose que fará a interface entre o 
 //nodejs e o banco de dados mongodb
@@ -59,7 +61,7 @@ const app = express();
 // Fazer o servidor express receber e tratar dados em formato json.
 
 app.use(express.json());
-
+app.use(cors());
 /*
 Abaixo, iremos criar as 4 rotas para os verbos get,post,put e de
     - GET  -> Esse verbo é utilizado todas as vezes que o usuário requisita
@@ -122,7 +124,7 @@ app.post("/api/cliente/cadastro",(req,res)=>{
         const gerado = criaToken(req.body.usuario,req.body.nome);
         res.status(201).send({output:`Cliente cadastrado` ,token:gerado});
     })
-    .catch((erro)=>res.status(400).send({output:`Erro ao tentar cadastrar o cliente -> ${erro}`}))
+    .catch((erro)=>res.status(400).send({output:`Erro ao tentar cadastrar o cliente`,message:erro}))
 
 });
 
