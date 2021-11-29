@@ -88,7 +88,7 @@ caso será a porta 3000.
 
 
 
-app.get("/api/cliente/",(req,res)=>{
+app.get("/api/cliente/", verifica,(req,res)=>{
     Cliente.find((erro,dados)=>{
         if(erro){
             return res.status(400).send({output:`Erro ao tentar ler os clientes -> ${erro}`});
@@ -138,7 +138,7 @@ app.post("/api/cliente/login",(req,res)=>{
         }
       bcrypt.compare(sh,dados.senha,(erro,igual)=>{
         if(erro) return res.status(400).senha({output:`Erro ao tentar logar-> ${erro}`});
-        if(!igual) return res.status(400).send({output:`Erro ao tentar logar-> ${erro}`});
+        if(!igual) return res.status(400).send({output:`A senha não é valida-> ${erro}`});
         const gerado = criaToken(dados.usuario,dados.nome);
         res.status(200).send({output:`Logado`,payload:dados,token:gerado});
       });
@@ -185,7 +185,6 @@ function verifica(req,res,next){
         if(erro){
             return res.status(401).send({output:"Token inválido"});
         }
-        res.status(200).send({output:`Autorizado`,payload:`Olá ${dados.nome}`})
         next();
     });
 };
